@@ -26,46 +26,44 @@ export default function SelectedCollection() {
     fetchSelectedCollection()
   }, [])
 
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+
 
   return (
     <header>
       {data ? (
         <div className="selected-collection">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={data.thumbnail}
-          src={data.videoLink}
-          className="selected-collection__bg"
-        />
-        <div className="selected-collection__description">
-          <img
-            src={SelectedItemLogo}
-            alt=""
-            className="selected-collection__logo"
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={data.thumbnail}
+            src={data.videoLink}
+            className="selected-collection__bg"
           />
-          <h1 className="selected-collection__title">
-            {data.title}
-          </h1>
-          <Link to={'/user'} className="selected-collection__author">
-            By {data.creator}
+          <div className="selected-collection__description">
             <img
-              src={VerifiedIcon}
-              className="selected-collection__author__verified"
+              src={SelectedItemLogo}
+              alt=""
+              className="selected-collection__logo"
             />
-          </Link>
-          <div className="selected-collection__details">{data.amountOfItems} items · {data.floorPrice} ETH</div>
-          <Link to={'/collection'} className="selected-collection__button">
-            <div className="green-pulse"></div>
-            View Collection
-          </Link>
+            <h1 className="selected-collection__title">
+              {data.title}
+            </h1>
+            <Link to={'/user'} className="selected-collection__author">
+              By {data.creator}
+              <img
+                src={VerifiedIcon}
+                className="selected-collection__author__verified"
+              />
+            </Link>
+            <div className="selected-collection__details">{data.amountOfItems} items · {data.floorPrice} ETH</div>
+            <Link to={'/collection'} className="selected-collection__button">
+              <div className="green-pulse"></div>
+              View Collection
+            </Link>
+          </div>
         </div>
-      </div>
       ) : (
         <div className="selected-collection">
           <Skeleton width={"100%"} height={"100%"} border-radius={"0px"} />
