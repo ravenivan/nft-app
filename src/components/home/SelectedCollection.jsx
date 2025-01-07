@@ -26,8 +26,6 @@ export default function SelectedCollection() {
     fetchSelectedCollection()
   }, [])
 
-
-
   return (
     <header>
       {data ? (
