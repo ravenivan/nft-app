@@ -50,7 +50,7 @@ export default function Trending() {
                 {data ? (
                   data.slice(0, 5).map((item, index) => (
                     <Link
-                      to={"/collection"}
+                      to={`/collection/${item.collectionId}`}
                       key={index}
                       className="trending-collection"
                     >
@@ -103,7 +103,7 @@ export default function Trending() {
                 {data ? (
                   data.slice(5, 10).map((item, index) => (
                     <Link
-                      to={"/collection"}
+                      to={`/collection/${item.collectionId}`}
                       key={index}
                       className="trending-collection"
                     >
