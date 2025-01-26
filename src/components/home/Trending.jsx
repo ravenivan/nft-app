@@ -84,7 +84,7 @@ export default function Trending() {
                     </Link>
                   ))
                 ) : (
-                  new Array(5).fill(0).map((_, index) => <TrendingSkeleton index={index + 1} />)
+                  new Array(5).fill(0).map((_, index) => <TrendingSkeleton index={index + 1} key={index} />)
                 )}
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function Trending() {
                     </Link>
                   ))
                 ) : (
-                  new Array(5).fill(0).map((_, index) => <TrendingSkeleton index={index + 6} />)
+                  new Array(5).fill(0).map((_, index) => <TrendingSkeleton index={index + 6} key={index+5} />)
                 )
                 }
               </div>
