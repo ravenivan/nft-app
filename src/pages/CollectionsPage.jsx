@@ -1,8 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SelectedCollection from "../components/home/SelectedCollection";
 import { Link } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import Card from "../components/ui/Card";
+import CollectionsSkeleton from "../components/ui/CollectionsSkeleton";
 
 export default function CollectionsPage() {
+
+  const { fetchData } = useContext(AppContext)
+
+  const [data, setData] = useState(null)
+  const [cardsShown, setCardsShown] = useState(12)
+
+  const handleLoadMore = () => {
+    if (cardsShown === data.length) return
+    if (cardsShown + 6 < data.length) {
+      setCardsShown(prev => prev + 6)
+    } else {
+      setCardsShown(data.length)
+    }
+  }
+
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const fetchedData = await fetchData("https://remote-internship-api-production.up.railway.app/collections")
+        setData(fetchedData)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchCollections()
+  }, [])
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -12,34 +43,25 @@ export default function CollectionsPage() {
       <div className="row">
         <h1 className="collections-page__title">Collections</h1>
         <div className="collections__body">
-          {new Array(12).fill(0).map((_, index) => (
-            <div className="collection-column">
-              <Link to="/collection" key={index} className="collection">
-                <img
-                  src="https://i.seadn.io/gcs/files/a5414557ae405cb6233b4e2e4fa1d9e6.jpg?auto=format&dpr=1&w=1920"
-                  alt=""
-                  className="collection__img"
-                />
-                <div className="collection__info">
-                  <h3 className="collection__name">Bored Ape Kennel Club</h3>
-                  <div className="collection__stats">
-                    <div className="collection__stat">
-                      <span className="collection__stat__label">Floor</span>
-                      <span className="collection__stat__data">0.46 ETH</span>
-                    </div>
-                    <div className="collection__stat">
-                      <span className="collection__stat__label">
-                        Total Volume
-                      </span>
-                      <span className="collection__stat__data">281K ETH</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          ))}
+          {data ? (
+            data.slice(0, cardsShown).map((item, index) => (
+              <div className="collection-column" key={index}>
+                <Card item={item}/>
+              </div>
+            ))
+          ) : (
+            new Array(12).fill(0).map((_, index) => (
+              <div className="collection-column" key={index}>
+                <CollectionsSkeleton key={index}/>
+              </div>
+            ))
+          )}
         </div>
-        <button className="collections-page__button">Load more</button>
+        <button className="collections-page__button"
+          onClick={handleLoadMore}
+        >
+          Load more
+        </button>
       </div>
     </div>
   );
