@@ -66,7 +66,7 @@ export default function CollectionItems({data}) {
         <div className="collection-items__body">
           {items.slice(0,itemsShown).map((item, index) => (
             <div className="item-column" key={index}>
-              <Link to={"/item"} key={item.itemId} className="item">
+              <Link to={`/item/${item.itemId}`} key={item.itemId} className="item">
                 <figure className="item__img__wrapper">
                   <img
                     src={item.imageLink}

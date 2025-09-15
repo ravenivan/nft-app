@@ -1,9 +1,14 @@
 import { faShoppingBag, faTableCells } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/css';
+import 'swiper/css/navigation';
 
-export default function RecommendedItems() {
+export default function RecommendedItems({ collectionData, itemId }) {
+
   return (
     <section id="recommended-items">
       <div className="container">
@@ -16,42 +21,79 @@ export default function RecommendedItems() {
               </h3>
             </div>
             <div className="recommended-items__body">
-              {new Array(6).fill(0).map((_, index) => (
-                <div className="item-column">
-                  <Link to={"/item"} key={index} className="item">
-                    <figure className="item__img__wrapper">
-                      <img
-                        src="https://i.seadn.io/gcs/files/0a085499e0f3800321618af356c5d36b.png?auto=format&dpr=1&w=384"
-                        alt=""
-                        className="item__img"
-                      />
-                    </figure>
-                    <div className="item__details">
-                      <span className="item__details__name">Meebit #0001</span>
-                      <span className="item__details__price">0.98 ETH</span>
-                      <span className="item__details__last-sale">
-                        Last sale: 7.45 ETH
-                      </span>
-                    </div>
-                    <div className="item__see-more">
-                      <button className="item__see-more__button">
-                        See More
-                      </button>
-                      <div className="item__see-more__icon">
-                        <FontAwesomeIcon icon={faShoppingBag} />
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+              <Swiper
+                style={{
+                  "--swiper-navigation-size": "40px",
+                  "--swiper-navigation-color": "white",
+                  "--swiper-navigation-background-color": 'black'
+                }}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 1
+                  },
+                  480: {
+                    slidesPerView: 2
+                  },
+                  768: {
+                    slidesPerView: 3
+                  },
+                  1024: {
+                    slidesPerView: 4
+                  },
+                  1200: {
+                    slidesPerView: 5
+                  },
+                  1600: {
+                    slidesPerView: 6
+                  }
+                }}
+                modules={[Navigation]}
+                slidesPerView={6}
+                spaceBetween={16}
+                loop={true}
+                navigation
+              >
+                {collectionData && collectionData.items.map((item, index) => (
+                  item.itemId !== itemId && (
+                      <SwiperSlide key={`${item.itemId}-${index}`} >
+                        <Link to={`/item/${item.itemId}`} className="item">
+                          <figure className="item__img__wrapper">
+                            <img
+                              src={item.imageLink}
+                              alt=""
+                              className="item__img"
+                            />
+                          </figure>
+                          <div className="item__details">
+                            <span className="item__details__name">{item.title}</span>
+                            <span className="item__details__price">{item.price} ETH</span>
+                            <span className="item__details__last-sale">
+                              Last sale: {item.lastSale} ETH
+                            </span>
+                          </div>
+                          <div className="item__see-more">
+                            <button className="item__see-more__button">
+                              See More
+                            </button>
+                            <div className="item__see-more__icon">
+                              <FontAwesomeIcon icon={faShoppingBag} />
+                            </div>
+                          </div>
+                        </Link>
+                      </SwiperSlide>
+                  )
+                ))}
+              </Swiper>
             </div>
             <div className="recommended-items__footer">
-              <Link
-                to={"/collection"}
-                className="recommended-items__footer__button"
-              >
-                View Collection
-              </Link>
+              {collectionData && (
+                <Link
+                  to={`/collection/${collectionData.id}`}
+                  className="recommended-items__footer__button"
+                >
+                  View Collection
+                </Link>
+              )}
             </div>
           </div>
         </div>
