@@ -13,29 +13,6 @@ import { AppContext } from "../context/AppContext";
 
 export default function ItemPage() {
 
-  const { id } = useParams();
-  const { fetchData } = useContext(AppContext)
-
-  const [data, setData] = useState(null);
-  const [collectionData, setCollectionData] = useState(null);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const fetchItem = async () => {
-      try {
-        const fetchedData = await fetchData(`https://remote-internship-api-production.up.railway.app/item/${id}`)
-        setData(fetchedData)
-        const fetchCollection = await fetchData(`https://remote-internship-api-production.up.railway.app/collection/${fetchedData.collectionId}`)
-        setCollectionData(fetchCollection)
-      } catch {
-        console.error(error)
-      }
-    }
-
-    fetchItem()
-  }, [id])
-
-
   return (
     <>
       {data && <section id="item-info">
@@ -65,7 +42,7 @@ export default function ItemPage() {
             </div>
             <div className="item-page__right">
               <Link
-                to={`/collection/${data.collectionId}`}
+                to={"/collection"}
                 className="item-page__collection light-blue"
               >
                 {data.collection}
@@ -74,7 +51,7 @@ export default function ItemPage() {
               <span className="item-page__owner">
                 Owned by{" "}
                 <Link
-                  to={`/user/${data.ownerId}`}
+                  to={"/user"}
                   className="light-blue item-page__owner__link"
                 >
                   {data.owner}
